@@ -289,8 +289,6 @@ sub loadscream {
     }
 
     $ENV{"LD_LIBRARY_PATH"} = ":/ul/griffith/ld_lib/libstdc++.so.6".$ENV{"LD_LIBRARY_PATH"};
-
-    die $ENV{"PYTHONPATH"} . "\n";
 }
 
 sub is_screamable {
