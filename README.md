@@ -59,3 +59,7 @@ scream-legacy standard -i scream.par -o output.out
 > More usage examples can be found in the `examples` directory.
 
 > **Note**: Relative paths will be resolved based on the current working directory (outside the container). Absolute paths should be used with caution, as they will be interpreted within the container's filesystem (e.g., `/app/lib/*`).
+
+## License
+
+This project is not licensed under any open-source license currently. All rights are reserved by the Caltech Materials and Process Simulation Center (MSC).
