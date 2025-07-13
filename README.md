@@ -2,13 +2,13 @@
 
 A portable Docker environment for running the original, legacy **SCREAM** (Side-Chain Rotamer Excitation Analysis Method) software on modern Linux systems.
 
-It encapsulates the complete CentOS 6 runtime environment, including Python 2.4.2 and all necessary libraries, allowing the pre-compiled legacy binaries to execute as they did on the original hardware.
+It encapsulates the complete CentOS 6 runtime environment, including Python 2.7.18 and all necessary libraries, allowing the pre-compiled legacy binaries to execute as they did on the original hardware.
 
 ## Tech Stack
 
 - **Containerization**: Docker
 - **Base OS**: CentOS 6
-- **Runtime**: Python 2.4.2, Perl 5.10.1
+- **Runtime**: Python 2.7.18, Perl 5.10.1
 
 ## Getting Started
 
