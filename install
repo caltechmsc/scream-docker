@@ -1,0 +1,64 @@
+#!/bin/bash
+
+set -e
+
+readonly IMAGE_NAME="scream-engine:legacy"
+readonly COMMAND_NAME="scream-legacy"
+readonly INSTALL_PATH="/usr/local/bin/${COMMAND_NAME}"
+
+echo "--- Starting SCREAM Legacy Setup ---"
+
+# Check if Docker is installed
+if ! command -v docker &> /dev/null; then
+    echo "Error: Docker is not installed. Please install Docker before running this setup." >&2
+    exit 1
+fi
+
+# Check if Docker daemon is running
+if ! docker info &> /dev/null; then
+    echo "Error: The Docker daemon is not running. Please start it and re-run the setup." >&2
+    exit 1
+fi
+
+echo "Docker is installed and running."
+
+echo "Building the SCREAM engine Docker image ('${IMAGE_NAME}'). This may take several minutes..."
+
+# Check if Dockerfile exists in the current directory
+if [ ! -f "Dockerfile" ]; then
+    echo "Error: Dockerfile not found. Please run this script from the root of the project." >&2
+    exit 1
+fi
+
+# Build the Docker image
+docker build -t "${IMAGE_NAME}" .
+echo "Docker image built successfully."
+
+# Create the wrapper script to run the Docker container
+SCRIPT_PATH="$(pwd)/scream"
+if [ ! -f "${SCRIPT_PATH}" ]; then
+    echo "Error: scream not found. Please ensure it is in the same directory as setup." >&2
+    exit 1
+fi
+
+# Create a symlink in /usr/local/bin for easy access
+echo "Creating system-wide command '${COMMAND_NAME}' at ${INSTALL_PATH}..."
+if [[ $EUID -ne 0 ]]; then
+    echo "This script needs to create a symbolic link in ${INSTALL_PATH}."
+    echo "You may be prompted for your password."
+    sudo ln -sf "${SCRIPT_PATH}" "${INSTALL_PATH}"
+else
+    ln -sf "${SCRIPT_PATH}" "${INSTALL_PATH}"
+fi
+chmod +x "${SCRIPT_PATH}" # Ensure the script is executable
+
+# Uninstall script setup
+UNINSTALL_SCRIPT_PATH="$(pwd)/uninstall"
+if [ ! -f "${UNINSTALL_SCRIPT_PATH}" ]; then
+    echo "Error: uninstall script not found. Please ensure it is in the same directory as setup." >&2
+    exit 1
+fi
+chmod +x "${UNINSTALL_SCRIPT_PATH}" # Ensure uninstall script is executable
+
+echo "Setup complete! You can now run the SCREAM engine using the command: ${COMMAND_NAME}"
+echo "For example, try: ${COMMAND_NAME} --help"
