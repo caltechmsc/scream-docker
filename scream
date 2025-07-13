@@ -2,7 +2,7 @@
 
 set -e
 
-readonly IMAGE_NAME="scream-engine:legacy"
+readonly IMAGE_NAME="scream:legacy"
 readonly SCRIPT_DIR_IN_CONTAINER="/app/programs"
 readonly CODE_DIR="$(dirname "$(realpath "$0")")/scream-legacy"
 
