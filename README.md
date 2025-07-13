@@ -34,8 +34,10 @@ It encapsulates the complete CentOS 6 runtime environment, including Python 2.4.
 3. Run SCREAM:
 
    ```bash
-   scream-legacy <sub-command> [options]
+   scream-legacy -h
    ```
+
+   > `scream-legacy <sub-command> [options]`
 
 ### Uninstallation
 
