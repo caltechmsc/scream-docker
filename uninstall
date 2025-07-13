@@ -2,7 +2,7 @@
 
 set -e
 
-readonly IMAGE_NAME="scream-engine:legacy"
+readonly IMAGE_NAME="scream:legacy"
 readonly COMMAND_NAME="scream-legacy"
 readonly INSTALL_PATH="/usr/local/bin/${COMMAND_NAME}"
 
