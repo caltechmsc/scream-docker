@@ -51,7 +51,7 @@ Once installed, you can run SCREAM commands using the `scream-legacy` script. Fo
 
 ```bash
 cd ./examples/standard
-scream-legacy standard -i scream.par -o output.bgf
+scream-legacy standard -i scream.par -o output.out
 ```
 
 > More usage examples can be found in the `examples` directory.
