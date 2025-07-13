@@ -1,0 +1,53 @@
+#!/bin/bash
+
+set -e
+
+readonly IMAGE_NAME="scream-engine:legacy"
+readonly SCRIPT_DIR_IN_CONTAINER="/app/programs"
+readonly CODE_DIR="$(dirname "$(realpath "$0")")/scream-legacy"
+
+readonly SUBCOMMAND="$1"
+if [ -z "${SUBCOMMAND}" ]; then
+    echo "Error: No subcommand provided." >&2
+    echo "Usage: scream-legacy <subcommand> [options...]" >&2
+    echo "Available subcommands: standard, ala, all, bindsite, deala, multi" >&2
+    exit 1
+fi
+
+shift
+
+declare -A SCRIPT_MAP
+SCRIPT_MAP["standard"]="scream3.pl"
+SCRIPT_MAP["ala"]="scream3_ala.pl"
+SCRIPT_MAP["all"]="scream3_all.pl"
+SCRIPT_MAP["bindsite"]="scream3_bindsite.pl"
+SCRIPT_MAP["deala"]="scream3_deala.pl"
+SCRIPT_MAP["multi"]="scream3_multi.pl"
+
+readonly TARGET_SCRIPT="${SCRIPT_MAP[${SUBCOMMAND}]}"
+
+if [ -z "${TARGET_SCRIPT}" ]; then
+    echo "Error: Unknown subcommand '${SUBCOMMAND}'." >&2
+    echo "Available subcommands: ${!SCRIPT_MAP[@]}" >&2
+    exit 1
+fi
+
+if ! command -v docker &> /dev/null || ! docker info &> /dev/null; then
+    echo "Error: Docker is not running. Please start the Docker daemon." >&2
+    exit 1
+fi
+
+if [ ! -d "$CODE_DIR" ]; then
+    echo "Error: Source code directory not found at $CODE_DIR" >&2
+    echo "Please update the script with the correct path to the SCREAM source code." >&2
+    exit 1
+fi
+
+docker run \
+  --rm \
+  --user "$(id -u):$(id -g)" \
+  -v "$(pwd):/work" \
+  -v "${CODE_DIR}:/app" \
+  -w /work \
+  "${IMAGE_NAME}" \
+  perl "/app/programs/${TARGET_SCRIPT}" "$@"
