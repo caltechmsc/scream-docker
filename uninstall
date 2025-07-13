@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -e
+
+readonly IMAGE_NAME="scream-engine:legacy"
+readonly COMMAND_NAME="scream-legacy"
+readonly INSTALL_PATH="/usr/local/bin/${COMMAND_NAME}"
+
+echo "--- Uninstalling SCREAM Legacy ---"
+
+# Remove the symbolic link
+if [ -L "${INSTALL_PATH}" ]; then
+    echo "Removing system command: ${INSTALL_PATH}"
+    if [[ $EUID -ne 0 ]]; then
+        echo "You may be prompted for your password to remove it."
+        sudo rm -f "${INSTALL_PATH}"
+    else
+        rm -f "${INSTALL_PATH}"
+    fi
+    echo "Removed symlink."
+else
+    echo "No symbolic link found at ${INSTALL_PATH}."
+fi
+
+# Optional: remove Docker image
+read -p "Do you want to remove the Docker image '${IMAGE_NAME}'? [y/N] " rm_img
+if [[ "$rm_img" =~ ^[Yy]$ ]]; then
+    docker rmi "${IMAGE_NAME}" || echo "Warning: Failed to remove image '${IMAGE_NAME}'"
+fi
+
+echo "Uninstall complete."
