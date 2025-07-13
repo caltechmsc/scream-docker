@@ -1,3 +1,3 @@
 #!/bin/bash
 
-scream-legacy standard -i scream.par -o output.bgf
+scream-legacy standard -i scream.par -o output.out
