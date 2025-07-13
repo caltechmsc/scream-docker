@@ -24,6 +24,15 @@ SCRIPT_MAP["bindsite"]="scream3_bindsite.pl"
 SCRIPT_MAP["deala"]="scream3_deala.pl"
 SCRIPT_MAP["multi"]="scream3_multi.pl"
 
+if [[ "${SUBCOMMAND}" == "help" || "${SUBCOMMAND}" == "--help" || "${SUBCOMMAND}" == "-h" ]]; then
+    echo "Usage: scream-legacy <subcommand> [options...]"
+    echo "Available subcommands:"
+    for key in "${!SCRIPT_MAP[@]}"; do
+        echo "  $key"
+    done
+    exit 0
+fi
+
 readonly TARGET_SCRIPT="${SCRIPT_MAP[${SUBCOMMAND}]}"
 
 if [ -z "${TARGET_SCRIPT}" ]; then
